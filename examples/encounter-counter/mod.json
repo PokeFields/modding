@@ -1,0 +1,7 @@
+{
+  "name": "Encounter Counter",
+  "version": "1.0",
+  "author": "PokeFields",
+  "description": "Counts your wild encounters and shinies, per character.",
+  "weblink": "https://github.com/PokeFields/modding"
+}

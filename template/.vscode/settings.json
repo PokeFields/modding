@@ -1,0 +1,4 @@
+{
+	"luau-lsp.types.definitionFiles": [".types/pokefields.d.luau"],
+	"luau-lsp.platform.type": "standard"
+}

@@ -1,0 +1,21 @@
+{
+  "system": {
+    "ModalPanel": {
+      "styles": {
+        "panel": { "bg_color": "#1e1424f2", "border_color": "#5a3d66" }
+      }
+    },
+    "ModalHeader": {
+      "styles": {
+        "panel": { "bg_color": "#2e1f38", "border_color": "#5a3d66" }
+      }
+    },
+    "Button": {
+      "styles": {
+        "normal": { "bg_color": "#2a1c33cc", "border_color": "#4a3356" },
+        "hover": { "bg_color": "#3a2747e6", "border_color": "#6e4c80" },
+        "pressed": { "bg_color": "#1a1120e6", "border_color": "#2e1f38" }
+      }
+    }
+  }
+}
