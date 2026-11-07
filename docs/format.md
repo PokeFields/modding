@@ -69,6 +69,19 @@ Any `.png`, `.ttf`, `.otf` file under `assets/sprites/ui/` or `assets/fonts/` re
 
 One mistake anywhere in `theme.json` skips the whole file, so a half-applied theme never draws.
 
+Control types can change between game versions, when one turns out to cover two parts of the screen. `pfmod check` cannot know which types a game version has, so a type the game does not have is not one of those mistakes: the game skips that type alone and names it in its log (Verbose Mod Debugs). After an update, dump again and compare.
+
+Addon windows have types of their own in `hud`, so a theme can restyle them apart from the game's windows:
+
+| Type | What |
+|---|---|
+| `AddonWindow` | An addon window's frame |
+| `AddonWindowTitle` | Its title |
+| `AddonLabel` | A line of text |
+| `AddonButton` | A button |
+| `AddonButtonSelected` | A button marked selected with `set_selected` |
+| `AddonBar` | A progress bar |
+
 ## Limits
 
 | What | Limit |

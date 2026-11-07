@@ -24,6 +24,10 @@ APIs from other games.
   (see Limits in `docs/api.md`). An addon that keeps erroring gets switched off.
 - `storage.save(value)` keeps plain data (numbers, strings, booleans and tables of them), saved per
   character.
+- The player can close any window, and reopens it from the game's menu under **Addons**. While it
+  is closed, `window:show()` does nothing, so don't fight it: listen with `window:on_close` and
+  `window:on_open`, and save whether it was closed if it should stay closed next session.
+- A window's `width` is its width: labels wrap to it, and a label in a row takes the space left.
 
 ## Before handing a mod over
 

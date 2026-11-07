@@ -40,8 +40,8 @@ If two mods change the same thing, the one lower in the list wins. Use â–² and â
 3. In Mod Management, press **Dump Resources**, pick what you want and press **Dump**. The game
    writes those files out as a mod would name them, so you can copy what you need into your mod and
    edit it. One of the options writes out every species and item id with its name.
-4. Tick **Verbose Mod Debugs** while you work. Skipped files, conflicts between mods and addon
-   errors all go to the game's log, `logs/godot.log`, in the folder just above your mods folder.
+4. Tick **Verbose Mod Debugs** while you work. Skipped files, theme types the game does not have,
+   conflicts between mods and addon errors all go to the game's log, `logs/godot.log`, in the folder just above your mods folder.
 
 Art, sounds and themes load when the game starts, so restart to see changes to them. Addon scripts
 reload each time you enter the world: go back to character select and pick your character again.
@@ -69,6 +69,7 @@ always match the version you're playing.
 | [`party-hp`](examples/party-hp) | A window with your party's HP. Reading state and rebuilding a window when it changes |
 | [`encounter-counter`](examples/encounter-counter) | Counts your wild encounters and shinies per character. Saving data between sessions |
 | [`matchups`](examples/matchups) | Shows how well your monster's moves hit the foe in a battle. Game data and battle events |
+| [`field-notes`](examples/field-notes) | Dex progress, time and weather in tabs. Selected buttons, pressable icons, remembering a closed window |
 | [`plum-theme`](examples/plum-theme) | Recolours windows and buttons. A theme with no art at all |
 
 To try one, copy its folder into your mods folder and enable it.

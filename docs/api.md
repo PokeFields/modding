@@ -27,7 +27,10 @@ Subscribe with `game.on(event, handler)`.
 | `caught` | [`Catch`](#catch) | You caught a monster. |
 | `skill_xp` | [`SkillXp`](#skillxp) | A skill earned experience. |
 | `dex_changed` | [`DexEntry`](#dexentry) | A dex entry changed. |
+| `dex_loaded` | none | Your whole dex arrived, just after `ready`; read it with `game.state("dex")`. |
 | `achievement` | [`Achievement`](#achievement) | You unlocked an achievement. |
+| `time_changed` | [`Time`](#time) | The world's clock reached a new minute. |
+| `weather_changed` | [`Weather`](#weather) | The weather where you are changed. |
 
 ## State
 
@@ -40,6 +43,10 @@ Read with `game.state(topic)`.
 | `party` | `{Monster}` | Your party, in order. |
 | `bag` | `{[number]: number}` | Your bag: how many of each item id. |
 | `money` | `number` | Your money. |
+| `dex` | `{[number]: DexEntry}` | Your dex by species id; a species you have never seen is absent. Nil until `dex_loaded`. |
+| `time` | `Time` | The time of day in the world. |
+| `weather` | `Weather` | The weather where you are. |
+| `client` | `Client` | The game you are playing on. |
 
 ## Functions
 
@@ -146,10 +153,12 @@ Runs `<name>.lua` from this mod once and returns what it returned.
 | `item` | `(self: Window, item: number) -> Icon` | Adds an item's icon. |
 | `row` | `(self: Window) -> Window` | Adds a row; what you add to the row sits side by side. |
 | `clear` | `(self: Window) -> ()` | Removes everything added to it. |
-| `show` | `(self: Window) -> ()` | Shows the window. |
+| `show` | `(self: Window) -> ()` | Shows the window, unless the player closed it: then it stays closed until they open it from the game's Addons menu. |
 | `hide` | `(self: Window) -> ()` | Hides the window. |
 | `toggle` | `(self: Window) -> ()` | Shows it if hidden, else hides it. |
 | `visible` | `(self: Window) -> boolean` | Whether it is shown. |
+| `on_close` | `(self: Window, handler: () -> ()) -> ()` | Runs `handler` when the player closes this window. Not for rows. |
+| `on_open` | `(self: Window, handler: () -> ()) -> ()` | Runs `handler` when the player opens this window from the game's Addons menu. Not for rows. |
 
 ### Label
 
@@ -163,6 +172,7 @@ Runs `<name>.lua` from this mod once and returns what it returned.
 |---|---|---|
 | `set_text` | `(self: Button, text: string) -> ()` | Changes its text. |
 | `set_enabled` | `(self: Button, enabled: boolean) -> ()` | Enables or greys it out. |
+| `set_selected` | `(self: Button, selected: boolean) -> ()` | Draws it as the selected one, as for the current tab. |
 
 ### Bar
 
@@ -176,6 +186,7 @@ Runs `<name>.lua` from this mod once and returns what it returned.
 |---|---|---|
 | `set_monster` | `(self: Icon, species: number) -> ()` | Shows a monster's box icon. |
 | `set_item` | `(self: Icon, item: number) -> ()` | Shows an item's icon. |
+| `on_press` | `(self: Icon, handler: () -> ()) -> ()` | Makes the icon pressable and runs `handler` each time it is pressed. A later call replaces the handler. |
 
 ### Timer
 
@@ -385,13 +396,41 @@ A skill earned experience.
 
 ### DexEntry
 
-A species' dex entry changed.
+A species' dex entry.
 
 | Field | Type | What |
 |---|---|---|
 | `species` | `number` | Species id |
 | `seen` | `boolean` | Seen |
 | `caught` | `boolean` | Caught |
+| `shiny` | `boolean` | Whether you have caught a shiny one |
+
+### Time
+
+The time of day in the world, which runs faster than real time.
+
+| Field | Type | What |
+|---|---|---|
+| `phase` | `string` | "morning", "day" or "night", as wild encounters count it |
+| `hour` | `number` | Hour, 0-23 |
+| `minute` | `number` | Minute, 0-59 |
+
+### Weather
+
+The weather where you are.
+
+| Field | Type | What |
+|---|---|---|
+| `kind` | `string` | "clear", "rain" or "harsh_sun" |
+
+### Client
+
+The game you are playing on.
+
+| Field | Type | What |
+|---|---|---|
+| `revision` | `number` | The game's revision, which goes up by one with every update |
+| `platform` | `string` | "windows", "linux" or "android" |
 
 ### Achievement
 
@@ -460,5 +499,5 @@ How `ui.window` makes a window.
 |---|---|---|
 | `id` | `string` | Unique within your mod; the window keeps its place under this id |
 | `title` | `string` | Shown in its header |
-| `width` | `number?` | Width in pixels; see Limits |
+| `width` | `number?` | Width in pixels; see Limits. Text wraps to fit it |
 
