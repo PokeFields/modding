@@ -40,7 +40,7 @@ A mod is a folder, or a `.zip` of one, in the game's mods folder. Its name is th
 | `monsters/follower/<species>[-shiny].png` | Walking sprite: 2 columns (steps) x 4 rows (up, down, left, right) of square cells, 16-128 px |
 | `monsters/cry/<species>.ogg` or `.wav` | Cry |
 | `items/<item>.png` | Item icon, 32x32. Clothing cannot be replaced |
-| `login/background.png` or `.ogv` | The login screen's background: an image (at most 4096x4096), or a looping Ogg Theora video. It covers the screen, cropping what does not fit |
+| `login/background.png` or `.ogv` | The login screen's background: an image (at most 4096x4096), or a looping Ogg Theora video. It covers the screen, cropping what does not fit. The dim drawn over it is the `menu` theme's `LoginBackgroundDim`, a `panel` style a theme can recolour, clear or replace with an image |
 
 A follower for a species that has no walking sprite in the game (494-649) makes it walk, for you and for everyone who has the same mod.
 
