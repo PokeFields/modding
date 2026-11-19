@@ -37,7 +37,7 @@ A mod is a folder, or a `.zip` of one, in the game's mods folder. Its name is th
 |---|---|
 | `monsters/front/<species>[-<form>][-shiny].png` or `.webp` | Battle sprite seen from the front, see Battle sprites |
 | `monsters/back/<species>[-<form>][-shiny].png` or `.webp` | The same from behind |
-| `monsters/icon/<species>.png` | Box icon, 32x32 |
+| `monsters/icon/<species>[-shiny].png` | Box icon, 32x32. A shiny without its own icon uses the normal one |
 | `monsters/follower/<species>[-shiny].png` | Walking sprite, see Followers |
 | `monsters/cry/<species>.ogg` or `.wav` | Cry |
 | `items/<item>.png` | Item icon, 32x32. Clothing cannot be replaced |
