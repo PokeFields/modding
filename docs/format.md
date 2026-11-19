@@ -62,9 +62,9 @@ A sheet is one row of square cells of 16-256 px, played left to right, 100 ms ea
 
 A sheet holds at most 256 cells and is at most 16384 px on either side.
 
-An animation is a square WebP of 16-512 px, animated or still, and keeps its own frames and frame times: at most 1024 frames of 16-10000 ms each, looping. It is decoded as it plays, so a long animation costs no more memory than a short one. Its `.json` may give only `size`.
+An animation is a WebP of 16-512 px on each side, animated or still, and keeps its own frames and frame times: at most 1024 frames of 16-10000 ms each, looping. It is decoded as it plays, so a long animation costs no more memory than a short one. Its `.json` may give only `size`. A GIF converts to one with nothing lost: `gif2webp in.gif -o out.webp`, from Google's WebP tools.
 
-`size` is how many of the game's pixels wide a cell or an animation is drawn: 16-256, and no more than its own pixels. Without it art is drawn at one game pixel per pixel, so anything larger than 256 px must give it. To draw at the game's own scale, give the cell size of that monster's sheet from Dump Resources (most are 96). Art drawn smaller than its pixels is smoothed; art drawn at its own size stays pixel-sharp.
+`size` is how many of the game's pixels wide a cell or an animation is drawn: 16-256, and no more than its own pixels; its height follows, and must also come to 16-256. Without `size` art is drawn at one game pixel per pixel, so anything larger than 256 px must give it. To draw at the game's own scale, give the cell size of that monster's sheet from Dump Resources (most are 96). Art drawn smaller than its pixels is smoothed; art drawn at its own size stays pixel-sharp.
 
 ### Followers
 
