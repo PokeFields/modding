@@ -11,8 +11,9 @@ same mod installed will see.
 
 ## What a mod can change
 
-- **Monster art and cries**: battle sprites (animated, front and back, shiny and forms), box icons,
-  followers and cries. A follower for a species that has none in the game makes it walk behind you.
+- **Monster art and cries**: battle sprites (animated, front and back, shiny and forms) and
+  followers, as pixel art or HD; box icons and cries. A follower for a species that has none in the
+  game makes it walk behind you.
 - **Item icons.**
 - **The interface**: its art, its fonts, and a theme for colours, sizes, panels and buttons.
 - **The login screen background**: an image or a looping video.

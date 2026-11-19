@@ -284,7 +284,8 @@ Where you are standing.
 | Field | Type | What |
 |---|---|---|
 | `map` | `string` | Map id |
-| `area` | `string` | Area name, "" on a map that names none |
+| `area` | `string` | Area name in the player's language, "" on a map that names none |
+| `area_id` | `string` | The area's id, the same in every language (`area-route_1`), "" on a map that names none |
 | `x` | `number` | Tile column |
 | `y` | `number` | Tile row |
 

@@ -53,6 +53,7 @@ type Player = {
 type Location = {
 	map: string,
 	area: string,
+	area_id: string,
 	x: number,
 	y: number,
 }

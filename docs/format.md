@@ -12,6 +12,7 @@ A mod is a folder, or a `.zip` of one, in the game's mods folder. Its name is th
 | `main.lua` + other `.lua` | Optional. An addon, see the API reference |
 | `assets/sprites/ui/...`, `assets/fonts/...` | Replaces the interface's own art and fonts, see Game files |
 | `monsters/...`, `items/...`, `login/background...` | Replaces monster art and cries and item icons, by id, and the login background |
+| `l10n/<locale>/...` | Rewords the game's text in any language, or adds a language, see Text |
 | `README.txt`, `LICENSE`, ... | `.txt`, `.md` and files without an extension at the root are ignored |
 
 ## mod.json
@@ -34,10 +35,10 @@ A mod is a folder, or a `.zip` of one, in the game's mods folder. Its name is th
 
 | Path | Image |
 |---|---|
-| `monsters/front/<species>[-<form>][-shiny].png` | Battle sprite seen from the front: square cells of 16-256 px |
-| `monsters/back/<species>[-<form>][-shiny].png` | The same from behind |
+| `monsters/front/<species>[-<form>][-shiny].png` or `.webp` | Battle sprite seen from the front, see Battle sprites |
+| `monsters/back/<species>[-<form>][-shiny].png` or `.webp` | The same from behind |
 | `monsters/icon/<species>.png` | Box icon, 32x32 |
-| `monsters/follower/<species>[-shiny].png` | Walking sprite: 2 columns (steps) x 4 rows (up, down, left, right) of square cells, 16-128 px |
+| `monsters/follower/<species>[-shiny].png` | Walking sprite, see Followers |
 | `monsters/cry/<species>.ogg` or `.wav` | Cry |
 | `items/<item>.png` | Item icon, 32x32. Clothing cannot be replaced |
 | `login/background.png` or `.ogv` | The login screen's background: an image (at most 4096x4096), or a looping Ogg Theora video. It covers the screen, cropping what does not fit. The dim drawn over it is the `menu` theme's `LoginBackgroundDim`, a `panel` style a theme can recolour, clear or replace with an image |
@@ -46,21 +47,54 @@ A follower for a species that has no walking sprite in the game (494-649) makes 
 
 ### Battle sprites
 
-A battle sprite is one row of square cells, played left to right, 100 ms each. The bottom centre of a cell is where the monster stands. A `.json` beside it, with the same name, changes how it plays:
+A battle sprite is a sheet (`.png`) or an animation (`.webp`). The bottom centre of a cell, or of the animation, is where the monster stands. A `.json` beside it, with the same name, changes how it is drawn and played.
+
+A sheet is one row of square cells of 16-256 px, played left to right, 100 ms each:
 
 ```json
-{"frame_ms": [100, 80, 120], "order": [0, 1, 0], "columns": 2}
+{"frame_ms": [100, 80, 120], "order": [0, 1, 0], "columns": 2, "size": 96}
 ```
 
 - `frame_ms`: one time for every step, or a list with one per step (16-10000 ms).
 - `order`: which cell each step shows, at most 1024 steps. Without it every cell plays once, in order.
 - `columns`: lays the cells out as a grid this many columns wide, read row by row. Without it the sheet is one row, so its height is the cell size.
+- `size`: see below.
 
 A sheet holds at most 256 cells and is at most 16384 px on either side.
+
+An animation is a square WebP of 16-512 px, animated or still, and keeps its own frames and frame times: at most 1024 frames of 16-10000 ms each, looping. It is decoded as it plays, so a long animation costs no more memory than a short one. Its `.json` may give only `size`.
+
+`size` is how many of the game's pixels wide a cell or an animation is drawn: 16-256, and no more than its own pixels. Without it art is drawn at one game pixel per pixel, so anything larger than 256 px must give it. To draw at the game's own scale, give the cell size of that monster's sheet from Dump Resources (most are 96). Art drawn smaller than its pixels is smoothed; art drawn at its own size stays pixel-sharp.
+
+### Followers
+
+A follower is 4 rows of square cells of 16-128 px, one row for each way it faces (up, down, left, right), and 1-8 cells in each row that it loops through while it is out, walking or standing. The game's own followers are two cells, a step each. A `.json` beside it, with the same name, changes how it is drawn and played:
+
+```json
+{"frame_ms": 90, "size": 32}
+```
+
+- `frame_ms`: one time for every cell, or a list with one per cell (16-10000 ms). Without it a cell lasts one of the game's own steps.
+- `size`: how many of the game's pixels wide a cell is drawn (16-128, and no more than its own pixels). To draw at the game's own scale, give the cell size of that monster's sheet from Dump Resources (most are 32). A follower drawn smaller than its pixels is smoothed, as a battle sprite is.
 
 ## Game files
 
 Any `.png`, `.ttf`, `.otf` file under `assets/sprites/ui/` or `assets/fonts/` replaces the game's own file at the same path: the interface's art and its fonts. Images may be at most 4096x4096. Dump Resources writes every one of them, so the paths are right. Nothing else under `assets/` can be replaced: the game's own world art, sounds and music stay as they are, and clothing is never moddable.
+
+## Text
+
+Every word the game shows is a message in a catalog, a `.ftl` file in [Project Fluent](https://projectfluent.org/)'s format, and a mod can reword any of them:
+
+| Path | What |
+|---|---|
+| `l10n/<locale>/<name>.ftl` | The interface, and the names of monsters, moves, abilities and items |
+| `l10n/<locale>/content/<name>.ftl` | The world: dialogue, the names of people and places, trainers, jobs, dungeons, achievements, tips |
+
+`<locale>` is a language tag: a language, then an optional script and region (`en`, `de`, `pt-BR`, `zh-Hant`). A file's name is yours; what counts is each message's id. A message replaces the game's message with the same id, in that language only; one the game does not have is never shown. Dump Resources (Text) writes every catalog the game has in English, so the ids and the variables are right. A monster, item, move or ability is named by `species-<species>`, `item-<item>`, `move-<id>` and `ability-<id>`; the dump's `SPECIES.txt` and `ITEMS.txt` list the ids.
+
+A message reads only the variables the game's English passes it (`{ $count }`), and may use the catalog's other messages and its terms (`{ -term }`); redefining a term rewords every message that uses it. A message that fails, by reading a variable the game does not pass, falls back to the game's own wording, for that message alone. Where two mods word the same message, the lower one wins.
+
+A language the game does not ship is offered in its settings once a mod has `l10n/<locale>/common.ftl` with `common-locale-name`, the language's name for itself. Whatever it does not translate reads in English.
 
 
 ## Themes
@@ -88,7 +122,8 @@ Addon windows have types of their own in `hud`, so a theme can restyle them apar
 |---|---|
 | Files in a mod | 20000 |
 | One file | 64 MiB |
-| Whole mod | 512 MiB |
+| Whole mod | 4096 MiB |
 | All scripts together | 2048 KiB |
+| One language's catalogs together | 8 MiB |
 
-A file that breaks a rule is skipped and reported; the rest of the mod still loads. Mods load in the order the Mod Management window lists them, and where two replace the same thing the lower one wins.
+A file that breaks a rule is skipped and reported, a catalog with anything Fluent cannot read among them; the rest of the mod still loads. Mods load in the order the Mod Management window lists them, and where two replace the same thing the lower one wins.
